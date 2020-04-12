@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:idiot_online/models/play_card.dart';
 import 'package:idiot_online/models/game.dart';
+import 'package:idiot_online/models/player.dart';
+import 'package:idiot_online/my_widgets/card.dart';
 import 'package:idiot_online/my_widgets/card_stock.dart';
+import 'package:idiot_online/my_widgets/mydeck.dart';
 import 'package:provider/provider.dart';
 
 class HomeView extends StatefulWidget {
@@ -16,6 +19,8 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    final Player player=Player("odofd");
+    Provider.of<Game>(context,listen: false).addPlayer(player);
     return Scaffold(
       appBar: AppBar(title: Text("Idiot")),
       backgroundColor: Colors.green,
@@ -31,6 +36,7 @@ class _HomeViewState extends State<HomeView> {
                 },
                 child: CardStock(Provider.of<Game>(context, listen: false).numberOfCardsInStock),
               )),
+              Positioned(bottom: 20,child: MyDeckWidget(player)),
         ],
       ),
     );

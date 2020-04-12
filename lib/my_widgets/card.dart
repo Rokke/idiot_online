@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:idiot_online/models/play_card.dart';
@@ -12,9 +13,10 @@ class CardWidget extends StatefulWidget {
 
 class _CardWidgetState extends State<CardWidget> {
   Widget _fetchMyType() {
+    if(kIsWeb) return Icon(Icons.hot_tub, color: (widget.playCard.playCardType == PlayCardType.Club || widget.playCard.playCardType == PlayCardType.Spade)? Colors.black:Colors.red,);
     return SvgPicture.asset(
       'assets/images/spade.svg',
-    );
+   );
   }
 
   @override
