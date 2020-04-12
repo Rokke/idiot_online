@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:idiot_online/models/card.dart';
+import 'package:idiot_online/models/play_card.dart';
 
 class CardWidget extends StatefulWidget {
   final PlayCard playCard;
@@ -11,7 +11,6 @@ class CardWidget extends StatefulWidget {
 }
 
 class _CardWidgetState extends State<CardWidget> {
-  @override
   Widget _fetchMyType() {
     return SvgPicture.asset(
       'assets/images/spade.svg',
@@ -20,8 +19,12 @@ class _CardWidgetState extends State<CardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        color: widget.playCard.show ? Colors.white : Colors.red,
+    return AnimatedContainer(
+        duration: Duration(seconds: 2),
+        decoration: BoxDecoration(
+          border: Border.all(),
+          color: widget.playCard.show ? Colors.white : Colors.red,
+        ),
         width: 80,
         height: 120,
         child: widget.playCard.show

@@ -24,6 +24,6 @@ class PlayCard {
   PlayCard(this.value, this.playCardType, {this.show = false});
   @override
   String toString() {
-    return "$value - ${playCardType.toString().split(".").last}";
+    return "$cardValue - ${playCardType.toString().split(".").last}";
   }
 }
