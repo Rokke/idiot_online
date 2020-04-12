@@ -1,9 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:idiot_online/models/constants.dart';
 import 'package:idiot_online/models/play_card.dart';
 
 class CardWidget extends StatefulWidget {
+  static const double cardWidth = 80;
+  static const double cardHeight = 120;
   final PlayCard playCard;
   CardWidget(this.playCard, {Key key}) : super(key: key);
 
@@ -12,11 +15,30 @@ class CardWidget extends StatefulWidget {
 }
 
 class _CardWidgetState extends State<CardWidget> {
+  String get filename {
+    switch (widget.playCard.playCardType) {
+      case PlayCardType.Club:
+        return 'club';
+      case PlayCardType.Spade:
+        return 'spade';
+      case PlayCardType.Diamond:
+        return 'diamond';
+      default:
+        return 'heart';
+    }
+  }
+
   Widget _fetchMyType() {
-    if(kIsWeb) return Icon(Icons.hot_tub, color: (widget.playCard.playCardType == PlayCardType.Club || widget.playCard.playCardType == PlayCardType.Spade)? Colors.black:Colors.red,);
+    if (kIsWeb)
+      return Image(
+        image: AssetImage('assets/images/$filename.png'),
+        color: (widget.playCard.playCardType == PlayCardType.Club || widget.playCard.playCardType == PlayCardType.Spade)
+            ? Colors.black
+            : Colors.red,
+      );
     return SvgPicture.asset(
-      'assets/images/spade.svg',
-   );
+      'assets/images/$filename.svg',
+    );
   }
 
   @override
@@ -27,16 +49,19 @@ class _CardWidgetState extends State<CardWidget> {
           border: Border.all(),
           color: widget.playCard.show ? Colors.white : Colors.red,
         ),
-        width: 80,
-        height: 120,
+        width: CardWidget.cardWidth,
+        height: CardWidget.cardHeight,
         child: widget.playCard.show
             ? Stack(
                 children: <Widget>[
-                  Positioned(left: 10, child: Text(widget.playCard.cardValue)),
+                  Positioned(left: 12, child: Text(widget.playCard.cardValue, style: textStyleCardValue)),
                   Positioned(top: 2, child: Container(width: 12, height: 12, child: _fetchMyType())),
                   Positioned(child: Container(child: _fetchMyType())),
                   Positioned(
-                      bottom: 0, right: 10, child: RotatedBox(quarterTurns: 2, child: Text(widget.playCard.cardValue))),
+                      bottom: 0,
+                      right: 12,
+                      child: RotatedBox(
+                          quarterTurns: 2, child: Text(widget.playCard.cardValue, style: textStyleCardValue))),
                   Positioned(
                       bottom: 2,
                       right: 0,

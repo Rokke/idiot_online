@@ -19,26 +19,29 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    final Player player=Player("odofd");
-    Provider.of<Game>(context,listen: false).addPlayer(player);
     return Scaffold(
-      appBar: AppBar(title: Text("Idiot")),
+      appBar: AppBar(title: Text("Idiot"), actions: [
+        IconButton(icon: Icon(Icons.refresh), onPressed: () => Provider.of<Game>(context, listen: false).startNewGame())
+      ]),
       backgroundColor: Colors.green,
-      body: Stack(
-        children: <Widget>[
-          Positioned(
-              width: 300,
-              child: GestureDetector(
-                onTap: () {
-                  print('test');
-                  playCard.show = !playCard.show;
-                  setState(() => {});
-                },
-                child: CardStock(Provider.of<Game>(context, listen: false).numberOfCardsInStock),
-              )),
-              Positioned(bottom: 20,child: MyDeckWidget(player)),
-        ],
-      ),
+      body: Consumer<Game>(builder: (context, game, _) {
+        print('Game consumer');
+        return Stack(
+          children: <Widget>[
+            Positioned(
+                width: 300,
+                child: GestureDetector(
+                  onTap: () {
+                    print('test');
+                    playCard.show = !playCard.show;
+                    setState(() => {});
+                  },
+                  child: CardStock(Provider.of<Game>(context, listen: false).numberOfCardsInStock),
+                )),
+            if (game.isStarted) Positioned(bottom: 0, child: MyDeckWidget(game.fetchPlayer(0))),
+          ],
+        );
+      }),
     );
   }
 }
