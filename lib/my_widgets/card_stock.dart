@@ -32,7 +32,6 @@ class _CardStockState extends State<CardStock> {
             bottom: (widget.numberOfCards - 1) / 2,
             child: GestureDetector(onTap: () => widget.onTap(), child: CardWidget(PlayCard(3, PlayCardType.Spade)))));
     return Container(
-      color: Colors.green[400],
       width: CardWidget.cardWidth + (widget.numberOfCards - 1) / (widget.lastCard == null ? 2 : 1),
       height: CardWidget.cardHeight + (widget.numberOfCards - 1) / (widget.lastCard == null ? 2 : 1),
       child: Stack(

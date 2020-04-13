@@ -4,25 +4,31 @@ import 'package:flutter/material.dart';
 import 'package:idiot_online/models/play_card.dart';
 import 'package:idiot_online/models/player.dart';
 
+enum GameState { nothing, create, initial, started, finished }
+
 class Game extends ChangeNotifier {
   List<PlayCard> _cardsStock = List<PlayCard>();
   List<PlayCard> _cardsPlayed = List<PlayCard>();
   List<Player> _players = List<Player>();
   bool useJoker;
   int numberOfDecs;
+  GameState _gameState = GameState.nothing;
   int get numberOfCardsInStock => _cardsStock.length;
   int get numberOfCardsPlayed => _cardsPlayed.length;
   PlayCard get lastCardPlayed => _cardsPlayed.length > 0 ? _cardsPlayed.last : null;
   Player fetchPlayer(int index) => _players[index];
-  bool get isStarted =>
-      _players.length >
-      0; // TODO: Her bør vi etterhvert ha noe som sier om spillet har startet og ikke bare om en spiller finnes.
+  bool get isStarted => _gameState == GameState.started;
+  GameState get state => _gameState;
   Game({this.useJoker = true, this.numberOfDecs = 1}) {
     print('!!!Game constructor');
-    startNewGame();
   }
-  startNewGame() {
-    print('startNewGame');
+  initializeGame() {
+    _gameState = GameState.nothing;
+    notifyListeners();
+  }
+
+  startGame(List<Player> players) {
+    print('startGame($players)');
     _cardsStock.clear();
     _players.clear();
     for (int decs = 0; decs < numberOfDecs; decs++) {
@@ -38,9 +44,16 @@ class Game extends ChangeNotifier {
       _cardsStock.add(PlayCard(15, PlayCardType.Club));
       _cardsStock.add(PlayCard(15, PlayCardType.Diamond));
     }
-    print('ferdig');
-    addPlayer(Player("playerMe"));
-    addPlayer(Player("player2"));
+    _gameState = GameState.initial;
+    players.forEach((player) {
+      addPlayer(player);
+    });
+    notifyListeners();
+  }
+
+  createNewGame() {
+    _gameState = GameState.create;
+    print('createNewGame');
     notifyListeners();
   }
 
@@ -81,7 +94,6 @@ class Game extends ChangeNotifier {
     print('Stock($numberOfCardsInStock): ${_cardsStock.map((e) => e.toString()).join(",")}');
     print('Played($numberOfCardsPlayed): ${_cardsPlayed.map((e) => e.toString()).join(",")}');
     _players.forEach((element) {
-      print('${element.name}:');
       element.printMyCards();
     });
   }

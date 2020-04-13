@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:idiot_online/models/game.dart';
-import 'package:idiot_online/my_widgets/card.dart';
 import 'package:idiot_online/my_widgets/card_stock.dart';
 import 'package:idiot_online/my_widgets/mydeck.dart';
 import 'package:provider/provider.dart';
@@ -42,7 +41,7 @@ class _GameViewState extends State<GameView> {
         ));
       else
         print('No cards playet yet');
-      if (game.isStarted) _children.add(Positioned(bottom: 0, child: MyDeckWidget(game.fetchPlayer(0))));
+      _children.add(Positioned(bottom: 0, child: MyDeckWidget(game.fetchPlayer(0))));
       return Stack(
         children: _children,
       );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:idiot_online/models/game.dart';
+import 'package:idiot_online/screens/create_game.dart';
 import 'package:idiot_online/screens/home.dart';
 import 'package:provider/provider.dart';
 
@@ -14,9 +15,18 @@ class MyApp extends StatelessWidget {
       title: 'Idiot',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        brightness: Brightness.dark,
+//        brightness: Brightness.dark,
       ),
-      home: HomeView(),
+      home: Consumer<Game>(builder: (_, game, __) {
+        //TODO: Not good since this will trigger for all changes and repaint everything
+        print('MyApp build(${game.state})');
+        switch (game.state) {
+          case GameState.create:
+            return CreateGame();
+          default:
+            return HomeView();
+        }
+      }),
     );
   }
 }
