@@ -5,6 +5,7 @@ import 'package:idiot_online/models/player.dart';
 import 'package:idiot_online/my_widgets/card.dart';
 import 'package:idiot_online/my_widgets/card_stock.dart';
 import 'package:idiot_online/my_widgets/mydeck.dart';
+import 'package:idiot_online/screens/game_started.dart';
 import 'package:provider/provider.dart';
 
 class HomeView extends StatefulWidget {
@@ -15,33 +16,18 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  PlayCard playCard = PlayCard(2, PlayCardType.Spade, show: false);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Idiot"), actions: [
-        IconButton(icon: Icon(Icons.refresh), onPressed: () => Provider.of<Game>(context, listen: false).startNewGame())
+        IconButton(
+            icon: Icon(Icons.refresh), onPressed: () => Provider.of<Game>(context, listen: false).startNewGame()),
+        IconButton(
+            icon: Icon(Icons.local_gas_station),
+            onPressed: () => Provider.of<Game>(context, listen: false).printDebugInfo()),
       ]),
       backgroundColor: Colors.green,
-      body: Consumer<Game>(builder: (context, game, _) {
-        print('Game consumer');
-        return Stack(
-          children: <Widget>[
-            Positioned(
-                width: 300,
-                child: GestureDetector(
-                  onTap: () {
-                    print('test');
-                    playCard.show = !playCard.show;
-                    setState(() => {});
-                  },
-                  child: CardStock(Provider.of<Game>(context, listen: false).numberOfCardsInStock),
-                )),
-            if (game.isStarted) Positioned(bottom: 0, child: MyDeckWidget(game.fetchPlayer(0))),
-          ],
-        );
-      }),
+      body: GameView(),
     );
   }
 }

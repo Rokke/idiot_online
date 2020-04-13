@@ -8,7 +8,8 @@ class CardWidget extends StatefulWidget {
   static const double cardWidth = 80;
   static const double cardHeight = 120;
   final PlayCard playCard;
-  CardWidget(this.playCard, {Key key}) : super(key: key);
+  final bool showCard;
+  CardWidget(this.playCard, {this.showCard = false, Key key}) : super(key: key);
 
   @override
   _CardWidgetState createState() => _CardWidgetState();
@@ -43,15 +44,16 @@ class _CardWidgetState extends State<CardWidget> {
 
   @override
   Widget build(BuildContext context) {
+//    print('CardWidget build(${widget.playCard}');
     return AnimatedContainer(
         duration: Duration(seconds: 2),
         decoration: BoxDecoration(
           border: Border.all(),
-          color: widget.playCard.show ? Colors.white : Colors.red,
+          color: widget.playCard.show || widget.showCard ? Colors.white : Colors.red,
         ),
         width: CardWidget.cardWidth,
         height: CardWidget.cardHeight,
-        child: widget.playCard.show
+        child: widget.playCard.show || widget.showCard
             ? Stack(
                 children: <Widget>[
                   Positioned(left: 12, child: Text(widget.playCard.cardValue, style: textStyleCardValue)),

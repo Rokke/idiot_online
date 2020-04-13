@@ -11,4 +11,8 @@ class Player {
     print('Top: ${cardsTop.map((e) => e.toString()).join(",")}');
     print('Hand: ${cardsHand.map((e) => e.toString()).join(",")}');
   }
+
+  set drawCard(PlayCard playCard) => cardsHand.add(playCard);
+  set drawCardList(List<PlayCard> playCard) => cardsHand.addAll(playCard);
+  int get numberOfCardsOnHand => cardsHand.length;
 }
