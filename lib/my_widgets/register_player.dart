@@ -19,7 +19,7 @@ class _RegisterPlayerState extends State<RegisterPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    print('build');
+    print('RegisterPlayer - build');
 //    print('RegisterPlayer build ${jsonEncode(_colors)}');
     return Container(
       color: widget.player.color,

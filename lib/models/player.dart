@@ -7,6 +7,14 @@ class Player {
   final List<PlayCard> cardsHand = List<PlayCard>();
   final List<PlayCard> cardsTop = List<PlayCard>();
   final List<PlayCard> cardsBottom = List<PlayCard>();
+  List<PlayCard> get cardOnTable {
+    List<PlayCard> newList = List<PlayCard>();
+    for (int i = 0; i < 3; i++) {
+      newList.add(cardsTop[i] ?? cardsBottom[i]);
+    }
+    return newList;
+  }
+
   Player(this.name, {this.color = Colors.blue});
   printMyCards() {
     print('Player: $name, $color');
@@ -17,6 +25,25 @@ class Player {
 
   set drawCard(PlayCard playCard) => cardsHand.add(playCard);
   set drawCardList(List<PlayCard> playCard) => cardsHand.addAll(playCard);
+  bool drawFromCardOnTable(int index) {
+    if (cardsTop[index] != null) {
+      cardsHand.add(cardsTop[index]);
+      cardsTop[index] = null;
+    } else
+      return false;
+    return true;
+  }
+
+  bool drawFromHandToTable(int index) {
+    for (int i = 0; i < 3; i++) {
+      if (cardsTop[i] == null) {
+        cardsTop[i] = cardsHand.removeAt(index);
+        return true;
+      }
+    }
+    return false;
+  }
+
   int get numberOfCardsOnHand => cardsHand.length;
   factory Player.createDefault() => Player("");
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:idiot_online/models/game.dart';
 import 'package:idiot_online/models/player.dart';
 import 'package:idiot_online/my_widgets/card.dart';
+import 'package:provider/provider.dart';
 
 class MyDeckWidget extends StatefulWidget {
   final Player _player;
@@ -11,6 +13,7 @@ class MyDeckWidget extends StatefulWidget {
 }
 
 class _MyDeckWidgetState extends State<MyDeckWidget> {
+  //TODO: Joker funker ikke å legge til på top og se
   @override
   Widget build(BuildContext context) {
     double widthSize =
@@ -24,6 +27,9 @@ class _MyDeckWidgetState extends State<MyDeckWidget> {
           left: i * (widthSize - cardWidthSize) / (widget._player.numberOfCardsOnHand - 1),
           child: CardWidget(
             widget._player.cardsHand[i],
+            onTap: () {
+              if (widget._player.drawFromHandToTable(i)) setState(() {});
+            },
             showCard: true,
           )));
     }
@@ -37,6 +43,7 @@ class _MyDeckWidgetState extends State<MyDeckWidget> {
       child: Stack(
         children: <Widget>[
           Positioned(
+            // Card on table
             left: widthSize / 2 - 2 * cardWidthSize,
             child: Container(
               alignment: Alignment.center,
@@ -46,13 +53,23 @@ class _MyDeckWidgetState extends State<MyDeckWidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: widget._player.cardsTop
-                      .map((e) =>
-                          SizedBox(width: cardWidthSize * .75, height: cardHeightSize * .75, child: CardWidget(e)))
+                  children: widget._player.cardOnTable
+                      .asMap()
+                      .map((index, playCard) => MapEntry(
+                          index,
+                          SizedBox(
+                              width: cardWidthSize * .75,
+                              height: cardHeightSize * .75,
+                              child: playCard == null
+                                  ? Container()
+                                  : CardWidget(playCard, onTap: () {
+                                      if (widget._player.drawFromCardOnTable(index)) setState(() {});
+                                    }))))
+                      .values
                       .toList()),
             ),
           ),
-          widget._player.numberOfCardsOnHand > 0
+          widget._player.numberOfCardsOnHand > 0 // Card on hand
               ? Positioned(
                   width: MediaQuery.of(context).size.width,
                   height: 80 * widget.sizeFactor,

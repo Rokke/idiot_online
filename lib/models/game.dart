@@ -33,7 +33,7 @@ class Game extends ChangeNotifier {
     _players.clear();
     for (int decs = 0; decs < numberOfDecs; decs++) {
       for (int j = 0; j < PlayCardType.values.length; j++) {
-        for (int i = 1; i < 14; i++) {
+        for (int i = 2; i < 15; i++) {
           final p = PlayCard(i, PlayCardType.values[j]);
           _cardsStock.add(p);
           print(p.toString());
@@ -46,7 +46,7 @@ class Game extends ChangeNotifier {
     }
     _gameState = GameState.initial;
     players.forEach((player) {
-      addPlayer(player);
+      _addPlayer(player);
     });
     notifyListeners();
   }
@@ -57,7 +57,7 @@ class Game extends ChangeNotifier {
     notifyListeners();
   }
 
-  addPlayer(Player player) {
+  _addPlayer(Player player) {
     print('addPlayer');
     _players.add(player);
     for (int i = 0; i < 3; i++) {
