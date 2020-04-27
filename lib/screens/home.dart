@@ -14,7 +14,12 @@ class HomeView extends StatefulWidget {
 _startQuickGame(BuildContext context) {
   Game game = Provider.of<Game>(context, listen: false);
   game.createNewGame();
-  game.startGame([Player("Odin"), Player("Ragnar")]);
+  game.startGame([
+    Player("Odin"),
+    Player("Ragnar")..color = Colors.green,
+    Player("Tom")..color = Colors.deepOrange,
+    Player("Emmelie")..color = Colors.purple
+  ]);
 }
 
 class _HomeViewState extends State<HomeView> {

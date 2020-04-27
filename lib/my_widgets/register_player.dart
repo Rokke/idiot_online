@@ -19,7 +19,7 @@ class _RegisterPlayerState extends State<RegisterPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    print('RegisterPlayer - build');
+    print('RegisterPlayer - build: ${widget.player?.color}');
 //    print('RegisterPlayer build ${jsonEncode(_colors)}');
     return Container(
       color: widget.player.color,
@@ -58,7 +58,6 @@ class _RegisterPlayerState extends State<RegisterPlayer> {
                       ))
                   .toList(),
               onChanged: (val) => setState(() {
-                    print('val: $val');
                     widget.player.color = val;
                   })),
           IconButton(

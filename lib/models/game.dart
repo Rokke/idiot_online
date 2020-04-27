@@ -10,7 +10,9 @@ class Game extends ChangeNotifier {
   List<PlayCard> _cardsStock = List<PlayCard>();
   List<PlayCard> _cardsPlayed = List<PlayCard>();
   List<Player> _players = List<Player>();
+  int playerMe = 0;
   bool useJoker;
+  int playersTurn = 0;
   int numberOfDecs;
   GameState _gameState = GameState.nothing;
   int get numberOfCardsInStock => _cardsStock.length;
@@ -25,6 +27,10 @@ class Game extends ChangeNotifier {
   initializeGame() {
     _gameState = GameState.nothing;
     notifyListeners();
+  }
+
+  bool isPlayerMe(Player _player) {
+    return _players.indexOf(_player) == playerMe;
   }
 
   startGame(List<Player> players) {
@@ -47,6 +53,7 @@ class Game extends ChangeNotifier {
     _gameState = GameState.initial;
     players.forEach((player) {
       _addPlayer(player);
+      player.state = PlayerState.swapping;
     });
     notifyListeners();
   }
@@ -62,7 +69,7 @@ class Game extends ChangeNotifier {
     _players.add(player);
     for (int i = 0; i < 3; i++) {
       player.cardsBottom.add(drawCardFromStock);
-      player.cardsTop.add(drawCardFromStock..show = true);
+      player.cardsTop.add(drawCardFromStock);
       player.cardsHand.add(drawCardFromStock);
     }
   }
@@ -81,7 +88,7 @@ class Game extends ChangeNotifier {
 
   set addCardToPlayed(PlayCard playCard) {
     print('addCardToPlayer');
-    _cardsPlayed.add(playCard..show = true);
+    _cardsPlayed.add(playCard);
     notifyListeners();
   }
 

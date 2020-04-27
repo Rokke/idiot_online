@@ -20,17 +20,19 @@ class _CardStockState extends State<CardStock> {
     List<Widget> children = List<Widget>();
     for (int i = 0; i < widget.numberOfCards - 1; i++) // -1 so that the last card drawn can be clicked
       children.add(widget.lastCard != null
-          ? Positioned(left: i.toDouble(), bottom: i.toDouble(), child: CardWidget(PlayCard(3, PlayCardType.Diamond)))
-          : Positioned(right: i / 2, bottom: i / 2, child: CardWidget(PlayCard(3, PlayCardType.Heart))));
+          ? Positioned(
+              left: i.toDouble(), bottom: i.toDouble(), child: CardWidget(PlayCard(3, PlayCardType.Diamond), false))
+          : Positioned(right: i / 2, bottom: i / 2, child: CardWidget(PlayCard(3, PlayCardType.Heart), false)));
     children.add(widget.lastCard != null
         ? Positioned(
             left: widget.numberOfCards - 1.0,
             bottom: widget.numberOfCards - 1.0,
-            child: GestureDetector(onTap: () => widget.onTap(), child: CardWidget(widget.lastCard)))
+            child: GestureDetector(onTap: () => widget.onTap(), child: CardWidget(widget.lastCard, true)))
         : Positioned(
             right: (widget.numberOfCards - 1) / 2,
             bottom: (widget.numberOfCards - 1) / 2,
-            child: GestureDetector(onTap: () => widget.onTap(), child: CardWidget(PlayCard(3, PlayCardType.Spade)))));
+            child: GestureDetector(
+                onTap: () => widget.onTap(), child: CardWidget(PlayCard(3, PlayCardType.Spade), false))));
     return Container(
       width: CardWidget.cardWidth + (widget.numberOfCards - 1) / (widget.lastCard == null ? 2 : 1),
       height: CardWidget.cardHeight + (widget.numberOfCards - 1) / (widget.lastCard == null ? 2 : 1),

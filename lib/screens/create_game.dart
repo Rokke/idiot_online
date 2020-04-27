@@ -23,7 +23,7 @@ class _CreateGameState extends State<CreateGame> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Idiot - lag spill")),
-      body: Stack(children: <Widget>[
+      body: Stack(overflow: Overflow.clip, children: <Widget>[
         Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,

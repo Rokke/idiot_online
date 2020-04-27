@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:idiot_online/models/play_card.dart';
 
+enum PlayerState { initial, swapping, ready, finished }
+
 class Player {
   String name;
   Color color;
+  PlayerState state = PlayerState.initial;
   final List<PlayCard> cardsHand = List<PlayCard>();
   final List<PlayCard> cardsTop = List<PlayCard>();
   final List<PlayCard> cardsBottom = List<PlayCard>();
@@ -21,6 +24,10 @@ class Player {
     print('Bottom: ${cardsBottom.map((e) => e.toString()).join(",")}');
     print('Top: ${cardsTop.map((e) => e.toString()).join(",")}');
     print('Hand: ${cardsHand.map((e) => e.toString()).join(",")}');
+  }
+
+  bool shouldShowCardOnTable(int index) {
+    return cardsTop[index] != null;
   }
 
   set drawCard(PlayCard playCard) => cardsHand.add(playCard);
@@ -42,6 +49,11 @@ class Player {
       }
     }
     return false;
+  }
+
+  @override
+  String toString() {
+    return '$name, $color, $state';
   }
 
   int get numberOfCardsOnHand => cardsHand.length;

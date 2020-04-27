@@ -3,7 +3,6 @@ enum PlayCardType { Spade, Heart, Diamond, Club }
 class PlayCard {
   final int value;
   final PlayCardType playCardType;
-  bool show;
   String get cardValue {
     switch (value) {
       case 14:
@@ -21,9 +20,9 @@ class PlayCard {
     }
   }
 
-  PlayCard(this.value, this.playCardType, {this.show = false});
+  PlayCard(this.value, this.playCardType);
   @override
   String toString() {
-    return "$cardValue - ${playCardType.toString().split(".").last}(${show ? '+' : '-'})";
+    return "$cardValue - ${playCardType.toString().split(".").last}";
   }
 }
