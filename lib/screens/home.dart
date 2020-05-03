@@ -20,6 +20,7 @@ _startQuickGame(BuildContext context) {
     Player("Tom")..color = Colors.deepOrange,
     Player("Emmelie")..color = Colors.purple
   ]);
+  Navigator.of(context).push(MaterialPageRoute(builder: (_) => GameView()));
 }
 
 class _HomeViewState extends State<HomeView> {

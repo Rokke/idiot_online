@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:idiot_online/models/game.dart';
 import 'package:idiot_online/models/player.dart';
 import 'package:idiot_online/my_widgets/card.dart';
+import 'package:idiot_online/my_widgets/player_deck/deck_on_hand.dart';
 import 'package:provider/provider.dart';
 
 class MyDeckWidget extends StatefulWidget {
@@ -27,21 +28,6 @@ class _MyDeckWidgetState extends State<MyDeckWidget> {
           heightSize = CardWidget.cardHeight * 1.75 * widget.sizeFactor,
           cardWidthSize = CardWidget.cardWidth * widget.sizeFactor,
           cardHeightSize = CardWidget.cardHeight * widget.sizeFactor;
-      List<Widget> _childrenHand = List<Widget>();
-      for (int i = 0; i < widget._player.numberOfCardsOnHand; i++) {
-        _childrenHand.add(Positioned(
-            left: i * (widthSize - cardWidthSize) / (widget._player.numberOfCardsOnHand - 1),
-            child: CardWidget(
-              widget._player.cardsHand[i],
-              isMe,
-              sizeFactor: widget.sizeFactor,
-              onTap: isMe
-                  ? () {
-                      if (widget._player.drawFromHandToTable(i)) setState(() {});
-                    }
-                  : null,
-            )));
-      }
       return Container(
         constraints: BoxConstraints(maxWidth: widthSize, maxHeight: heightSize),
         color: widget._player.color,
@@ -78,15 +64,18 @@ class _MyDeckWidgetState extends State<MyDeckWidget> {
                         .toList()),
               ),
             ),
-            widget._player.numberOfCardsOnHand > 0 // Card on hand
-                ? Positioned(
-                    width: MediaQuery.of(context).size.width * widget.sizeFactor,
-                    height: 80 * widget.sizeFactor,
-                    bottom: 0,
-                    child: Stack(
-                      children: _childrenHand,
-                    ))
-                : Container(),
+            if (widget._player.numberOfCardsOnHand > 0)
+              Positioned(
+                  width: MediaQuery.of(context).size.width * widget.sizeFactor,
+                  height: 80 * widget.sizeFactor,
+                  bottom: 0,
+                  child: DeckOnHand(widget._player, isMe, widget.sizeFactor,
+                      onCardDrawn: (index) => setState(() {
+                            if (widget._player.state == PlayerState.initial)
+                              widget._player.drawFromHandToTable(index);
+                            else if (game.isStarted && widget._player.state == PlayerState.myTurn)
+                              setState(() => game.addCardToPlayed = widget._player.playCard(index));
+                          }))),
             Positioned(
               bottom: 75 * widget.sizeFactor,
               right: 0,
@@ -115,7 +104,9 @@ class _MyDeckWidgetState extends State<MyDeckWidget> {
                       hoverColor: Colors.black54,
                       textColor: Colors.white,
                       onPressed: widget._player.numberOfCardsOnHand == 3
-                          ? () => widget._player.state == PlayerState.ready
+                          ? () => setState(() {
+                                widget._player.state = PlayerState.ready;
+                              })
                           : null,
                       child: Text('Ferdig')))
           ],

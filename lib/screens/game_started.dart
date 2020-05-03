@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/scheduler/ticker.dart';
 import 'package:idiot_online/models/game.dart';
-import 'package:idiot_online/models/play_card.dart';
-import 'package:idiot_online/my_widgets/card.dart';
 import 'package:idiot_online/my_widgets/card_stock.dart';
 import 'package:idiot_online/my_widgets/mydeck.dart';
 import 'package:provider/provider.dart';

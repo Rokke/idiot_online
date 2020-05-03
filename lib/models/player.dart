@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:idiot_online/models/play_card.dart';
 
-enum PlayerState { initial, swapping, ready, finished }
+enum PlayerState { initial, swapping, ready, myTurn, finished }
 
 class Player {
   String name;
@@ -49,6 +49,11 @@ class Player {
       }
     }
     return false;
+  }
+
+  PlayCard playCard(int index) {
+    state = PlayerState.ready;
+    return cardsHand.removeAt(index);
   }
 
   @override
